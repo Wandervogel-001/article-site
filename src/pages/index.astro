@@ -19,7 +19,7 @@ const sorted = articles.sort(
   <ul class="articles-list">
     {sorted.map((article) => (
       <li>
-        <a href={`/articles/${article.slug}`}>
+        <a href={`/articles/${article.id}`}>
           <span class="article-title">{article.data.title}</span>
           {article.data.subtitle && (
             <span class="article-subtitle">{article.data.subtitle}</span>
