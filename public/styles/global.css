@@ -185,6 +185,14 @@ em     { font-style: italic; color: var(--rust); transition: color 0.3s; }
   transition: color 0.3s, border-color 0.3s, font-family 0.1s;
 }
 
+.verse p {
+  color: var(--rust);
+  font-family: var(--display-font, 'Amiri', serif);
+  font-size: 1.25rem;
+  text-align: center;
+  margin: 0;
+}
+
 /* ─── HADITH ─── */
 .hadith {
   margin: 36px 0;

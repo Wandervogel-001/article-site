@@ -24,12 +24,6 @@ const sorted = articles.sort(
           {article.data.subtitle && (
             <span class="article-subtitle">{article.data.subtitle}</span>
           )}
-          <span class="article-date">
-            {new Date(article.data.date).toLocaleDateString('ar-EG', {
-              year: 'numeric',
-              month: 'long',
-            })}
-          </span>
         </a>
       </li>
     ))}

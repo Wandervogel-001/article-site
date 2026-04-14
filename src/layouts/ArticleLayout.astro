@@ -21,7 +21,6 @@ const formattedDate = new Date(date).toLocaleDateString('ar-EG', {
     {type && <span class="label">{type}</span>}
     <h1>{title}</h1>
     {subtitle && <p class="subtitle">{subtitle}</p>}
-    <p style="margin-top: 16px; font-size: 0.8rem; color: var(--muted); letter-spacing: 1px;">{formattedDate}</p>
   </header>
 
   <slot />
