@@ -1,0 +1,32 @@
+---
+import BaseLayout from './BaseLayout.astro';
+
+export interface Props {
+  title: string;
+  subtitle?: string;
+  type?: string;
+  date: Date | string;
+}
+
+const { title, subtitle, type, date } = Astro.props;
+
+const formattedDate = new Date(date).toLocaleDateString('ar-EG', {
+  year: 'numeric',
+  month: 'long',
+  day: 'numeric',
+});
+---
+<BaseLayout title={`${title}${subtitle ? ' — ' + subtitle : ''}`}>
+  <header>
+    {type && <span class="label">{type}</span>}
+    <h1>{title}</h1>
+    {subtitle && <p class="subtitle">{subtitle}</p>}
+    <p style="margin-top: 16px; font-size: 0.8rem; color: var(--muted); letter-spacing: 1px;">{formattedDate}</p>
+  </header>
+
+  <slot />
+
+  <footer>
+    <p>نهاية المقالة &mdash; <a href="/" style="color: var(--sepia); text-decoration: none;">العودة إلى الرئيسية</a></p>
+  </footer>
+</BaseLayout>

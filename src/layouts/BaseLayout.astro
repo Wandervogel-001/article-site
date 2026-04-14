@@ -1,0 +1,87 @@
+---
+export interface Props {
+  title: string;
+  description?: string;
+}
+const { title, description = '' } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>{title}</title>
+  {description && <meta name="description" content={description} />}
+  <link
+    href="https://fonts.googleapis.com/css2?family=Amiri:ital,wght@0,400;0,700;1,400&family=Tajawal:wght@300;400;500;700&family=Scheherazade+New:wght@400;700&family=Cairo:wght@300;400;600;700&family=Noto+Naskh+Arabic:wght@400;700&display=swap"
+    rel="stylesheet"
+  />
+  <link rel="stylesheet" href="/styles/global.css" />
+</head>
+<body class="font-tajawal">
+
+<div class="toolbar">
+  <div class="toolbar-left">
+    <span class="toolbar-label">الخط:</span>
+    <button class="font-btn active" onclick="setFont('tajawal',this)" style="font-family:'Tajawal'">تجوال</button>
+    <button class="font-btn"        onclick="setFont('cairo',this)"   style="font-family:'Cairo'">كايرو</button>
+    <button class="font-btn"        onclick="setFont('amiri',this)"   style="font-family:'Amiri'">أميري</button>
+    <button class="font-btn"        onclick="setFont('scheherazade',this)" style="font-family:'Scheherazade New'">شهرزاد</button>
+    <button class="font-btn"        onclick="setFont('naskh',this)"   style="font-family:'Noto Naskh Arabic'">نسخ</button>
+  </div>
+  <label class="dark-toggle" onclick="toggleDark()">
+    <span class="toggle-icon" id="modeIcon">☀️</span>
+    <div class="toggle-track"><div class="toggle-thumb"></div></div>
+  </label>
+</div>
+
+<div class="page">
+  <slot />
+</div>
+
+<script>
+  // Font switcher
+  function setFont(name: string, btn: HTMLElement) {
+    document.querySelectorAll('.font-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.body.className = document.body.className.replace(/font-\S+/g, '').trim();
+    document.body.classList.add('font-' + name);
+    localStorage.setItem('font', name);
+  }
+
+  // Dark mode
+  function toggleDark() {
+    const isDark = document.body.classList.toggle('dark');
+    const icon = document.getElementById('modeIcon');
+    if (icon) icon.textContent = isDark ? '🌙' : '☀️';
+    localStorage.setItem('dark', isDark ? '1' : '0');
+  }
+
+  // Restore preferences on load
+  const savedFont = localStorage.getItem('font') || 'tajawal';
+  const savedDark = localStorage.getItem('dark');
+  const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+
+  if (savedDark === '1' || (savedDark === null && prefersDark)) {
+    document.body.classList.add('dark');
+    const icon = document.getElementById('modeIcon');
+    if (icon) icon.textContent = '🌙';
+  }
+
+  if (savedFont !== 'tajawal') {
+    document.body.className = document.body.className.replace(/font-\S+/g, '').trim();
+    document.body.classList.add('font-' + savedFont);
+    document.querySelectorAll('.font-btn').forEach(b => {
+      const el = b as HTMLElement;
+      const onclick = el.getAttribute('onclick') || '';
+      if (onclick.includes(`'${savedFont}'`)) el.classList.add('active');
+      else el.classList.remove('active');
+    });
+  }
+
+  // Make functions global
+  (window as any).setFont = setFont;
+  (window as any).toggleDark = toggleDark;
+</script>
+</body>
+</html>

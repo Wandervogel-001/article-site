@@ -1,0 +1,41 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCollection } from 'astro:content';
+
+const articles = await getCollection('articles');
+
+// Sort by date, oldest first (change to b.data.date - a.data.date for newest first)
+const sorted = articles.sort(
+  (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
+);
+---
+<BaseLayout title="مقالات">
+  <header class="home-header">
+    <span class="label">أرشيف الكتابة</span>
+    <h1>مقالات</h1>
+    <p class="subtitle">تأملات في الإنسان والزمن والمعنى</p>
+  </header>
+
+  <ul class="articles-list">
+    {sorted.map((article) => (
+      <li>
+        <a href={`/articles/${article.slug}`}>
+          <span class="article-title">{article.data.title}</span>
+          {article.data.subtitle && (
+            <span class="article-subtitle">{article.data.subtitle}</span>
+          )}
+          <span class="article-date">
+            {new Date(article.data.date).toLocaleDateString('ar-EG', {
+              year: 'numeric',
+              month: 'long',
+            })}
+          </span>
+        </a>
+      </li>
+    ))}
+  </ul>
+
+  <footer>
+    <p>جميع الحقوق محفوظة</p>
+  </footer>
+</BaseLayout>
