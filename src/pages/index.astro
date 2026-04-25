@@ -4,9 +4,9 @@ import { getCollection } from 'astro:content';
 
 const articles = await getCollection('articles');
 
-// Sort by date, oldest first (change to b.data.date - a.data.date for newest first)
+// Sort by index, newest first
 const sorted = articles.sort(
-  (a, b) => new Date(a.data.date).getTime() - new Date(b.data.date).getTime()
+  (a, b) => (b.data.index ?? 0) - (a.data.index ?? 0)
 );
 ---
 <BaseLayout title="مقالات">

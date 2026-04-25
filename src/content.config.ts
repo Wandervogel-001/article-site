@@ -12,6 +12,7 @@ const articles = defineCollection({
     subtitle: z.string().optional(),
     type: z.string().optional(),
     date: z.coerce.date(),
+    index: z.number().optional(),
   }),
 });
 
